@@ -5,6 +5,11 @@ let list = document.getElementById('list');
 //add task in to do list
 let toDoList = [];
 
+if (localStorage.getItem('taskItem') != undefined) {
+	toDoList = JSON.parse(localStorage.getItem('taskItem'));
+	item ();
+}
+
 function addBtn () {
 	if (text.value === '') {
 		alert ('Input text, please !');
@@ -58,4 +63,6 @@ function item () {
 	del.className = 'delete';
 	del.innerText = 'Delete';
 	};
+
+	localStorage.setItem ('taskItem',JSON.stringify(toDoList));
 };
