@@ -1,20 +1,61 @@
-// add task in list
-$(document).ready(function() {
-    $('#btn-add').click(function() {
-        let inputText = $('#input-text').val();
-        if (!inputText) {
-            return false;
-        }
-        let task = '<li class="string"> <div> <input type="checkbox" class="check">' + inputText + '</div> <div> <button class="edit">Edit</button> <button class="delete">Delete</button> </div> </li>';
-        $('#list').append(task);
-        $('#input-text').val('');
-        deleteString();
-    })
+let add = document.getElementById('btnAdd');
+let text = document.getElementById('inputText');
+let list = document.getElementById('list');
+
+//add task in to do list
+let toDoList = [];
+
+function addBtn () {
+	if (text.value === '') {
+		alert ('Input text, please !');
+	}
+	else {
+		toDoList.push({
+        content: text.value,
+        remove: false,
+    });
+    text.value = '';
+    item ();
+	}
+}
+
+text.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+        toDoList.push({
+        	content: text.value,
+        	remove: false,
+        });
+        text.value = '';
+        item ();
+    };
 });
 
-//delete string
-function deleteString() {
-    $('.delete').click(function(){
-        $(this).parents('#list').remove();
-    })
-}
+function item () {
+	list.innerHTML = '';
+	for (let task of toDoList) {
+
+	let li = document.createElement('li');
+	li.className = 'list__item';
+	list.append(li);
+
+	let checkbox = document.createElement('input');
+	li.append(checkbox);
+	checkbox.className = 'check';
+	checkbox.type = 'checkbox';
+
+	let span = document.createElement('span');
+	li.append(span);
+	span.className = 'taskText';
+	span.innerText = task.content;
+
+	let edit = document.createElement('button');
+	li.append(edit);
+	edit.className = 'edit';
+	edit.innerText = 'Edit';
+
+	let del = document.createElement('button');
+	li.append(del);
+	del.className = 'delete';
+	del.innerText = 'Delete';
+	};
+};
