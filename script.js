@@ -2,7 +2,6 @@ let add = document.getElementById('btnAdd');
 let text = document.getElementById('inputText');
 let list = document.getElementById('list');
 
-//add task in to do list
 let toDoList = [];
 
 if (localStorage.getItem('taskItem') != undefined) {
@@ -66,3 +65,12 @@ function item () {
 
 	localStorage.setItem ('taskItem',JSON.stringify(toDoList));
 };
+
+function sendAjax () {
+	let request = new XMLHttpRequest ();
+	request.onreadystatechange = function () {
+		console.log(request.readyState);
+	}
+	request.open('GET', 'index.php');
+	request.send();
+}
