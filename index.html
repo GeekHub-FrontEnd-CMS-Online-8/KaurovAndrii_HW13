@@ -11,10 +11,11 @@
 <body>
     <div class="container">
         <h1>To do list</h1>
-        <input type="text" placeholder="Input text..." class="input-text" id="inputText">
-        <button class="btn" id="btnAdd" onclick="addBtn()">Add</button>
+        <input type="text" placeholder="Input text..." class="input-text font" id="inputText">
+        <button class="btn font" id="btnAdd">Add</button>
         <ul class= "list" id="list"></ul>
-        <button class="btn" id="btnLoad" onclick="sendAjax ()">Load More</button>
+        <button class="btn font" id="btnLoad" onclick="sendData ()">Load More</button>
+        <p id="send" class="font"></p>
     </div>
     <script src="script.js"></script>
 </body>

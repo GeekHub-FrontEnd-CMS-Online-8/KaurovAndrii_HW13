@@ -1,72 +1,95 @@
-let add = document.getElementById('btnAdd');
-let text = document.getElementById('inputText');
-let list = document.getElementById('list');
+const add = document.getElementById('btnAdd');
+const text = document.getElementById('inputText');
+const list = document.getElementById('list');
 
-let toDoList = [];
+function createLi (task) {
+	let listItem = document.createElement('li');
+	listItem.className = 'font';
 
-if (localStorage.getItem('taskItem') != undefined) {
-	toDoList = JSON.parse(localStorage.getItem('taskItem'));
-	item ();
-}
-
-function addBtn () {
-	if (text.value === '') {
-		alert ('Input text, please !');
-	}
-	else {
-		toDoList.push({
-        content: text.value,
-        remove: false,
-    });
-    text.value = '';
-    item ();
-	}
-}
-
-text.addEventListener('keydown', event => {
-    if (event.key === 'Enter' || event.keyCode === 13) {
-        toDoList.push({
-        	content: text.value,
-        	remove: false,
-        });
-        text.value = '';
-        item ();
-    };
-});
-
-function item () {
-	list.innerHTML = '';
-	for (let task of toDoList) {
-
-	let li = document.createElement('li');
-	li.className = 'list__item';
-	list.append(li);
-
-	let checkbox = document.createElement('input');
-	li.append(checkbox);
-	checkbox.className = 'check';
-	checkbox.type = 'checkbox';
+	let check = document.createElement('input');
+	check.className = 'check';
+	check.type = 'checkbox';
 
 	let span = document.createElement('span');
-	li.append(span);
-	span.className = 'taskText';
-	span.innerText = task.content;
+	span.innerText = task;
+	span.className = 'spanItem';
+
+	let inputText = document.createElement('input');
+	inputText.type = 'text';
+	inputText.className = 'editTask';
+
+	let spanBtns = document.createElement('span');
 
 	let edit = document.createElement('button');
-	li.append(edit);
 	edit.className = 'edit';
 	edit.innerText = 'Edit';
 
 	let del = document.createElement('button');
-	li.append(del);
 	del.className = 'delete';
 	del.innerText = 'Delete';
+
+	spanBtns.appendChild(edit);
+	spanBtns.appendChild(del);
+
+	listItem.appendChild(check);
+	listItem.appendChild(span);
+	listItem.appendChild(inputText);
+	listItem.appendChild(spanBtns);
+
+	return listItem;
+}
+
+function addTask () {
+	if (text.value == '') alert('Input text, please !');
+	else {
+		localStorage.setItem('task', JSON.stringify(list));
+		let a = JSON.parse(localStorage.getItem('task'));
+		console.log (a);
+
+		let listItem = createLi(text.value);
+		list.appendChild(listItem);
+
+		tempTask (listItem);
+		text.value = '';
+	}
+}
+
+add.onclick = addTask;
+
+function delLi () {
+	let liBtns = this.parentNode;
+	let li = liBtns.parentNode;
+	let ul = li.parentNode;
+
+	ul.removeChild(li);
+}
+
+function editLi () {
+	let editText = prompt('Enter the correct task');
+
+	if (editText != null && editText != '') {
+		let liBtns = this.parentNode;
+		let li = liBtns.parentNode;
+		let ul = li.parentNode;
+		ul.removeChild(li);
+
+		let listItem = createLi(editText);
+		list.appendChild(listItem);
 	};
+}
 
-	localStorage.setItem ('taskItem',JSON.stringify(toDoList));
-};
+function tempTask (listItem) {
+	let btnEdit = listItem.querySelector('.edit');
+	let btnDelete = listItem.querySelector('.delete');
 
-function sendAjax () {
+	btnDelete.onclick = delLi;
+	btnEdit.onclick = editLi;
+}
+
+function sendData () {
+	let sendText = document.getElementById('send');
+	sendText.innerText = 'Data send';
+
 	let request = new XMLHttpRequest ();
 	request.onreadystatechange = function () {
 		console.log(request.readyState);
